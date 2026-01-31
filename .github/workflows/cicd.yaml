@@ -27,18 +27,18 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.version }}
           docker build --no-cache \
-            -t ghcr.io/${{ github.repository_owner }}/devsecops-workshop-fresh:$VERSION \
-            -t ghcr.io/${{ github.repository_owner }}/devsecops-workshop-fresh:latest \
+            -t ghcr.io/${{ github.repository_owner }}/devsecops-workshop:$VERSION \
+            -t ghcr.io/${{ github.repository_owner }}/devsecops-workshop:latest \
             -f app/Dockerfile app/
 
       - name: Login to GHCR
-        run: echo "${{ secrets.ghcr_secret }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push Images
         run: |
           VERSION=${{ steps.version.outputs.version }}
-          docker push ghcr.io/${{ github.repository_owner }}/devsecops-workshop-fresh:$VERSION
-          docker push ghcr.io/${{ github.repository_owner }}/devsecops-workshop-fresh:latest
+          docker push ghcr.io/${{ github.repository_owner }}/devsecops-workshop:$VERSION
+          docker push ghcr.io/${{ github.repository_owner }}/devsecops-workshop:latest
 
       - name: Create GHCR Secret
         run: |
